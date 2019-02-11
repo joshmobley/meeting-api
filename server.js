@@ -1,16 +1,33 @@
-
-const dotenv = require('dotenv')
 const express = require('express')
-dotenv.load();
+const session = require('express-session')
+const passport = require('passport')
+const cors = require('cors')
+
 require('./db')
 
+const corsOptions = {
+
+  origin: 'http://localhost:3001',
+  credentials: true
+  
+}
+
 const app = express()
+app.use(cors(corsOptions))
+
+app.use(session({ secret: 'mightymorphinpowerrangers' }));
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./passport')
 
 const AgendaController = require('./agenda/AgendaController')
+const AuthController = require('./auth/AuthController')
 const MeetingController = require('./meeting/MeetingController')
 const UserController = require('./user/UserController')
 
 app.use('/agenda', AgendaController)
+app.use('/auth', AuthController)
 app.use('/meeting', MeetingController)
 app.use('/user', UserController)
 

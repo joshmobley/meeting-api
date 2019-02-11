@@ -3,6 +3,7 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 const User = require('./User')
 const mongoose = require('mongoose')
+const hasSession = require('../middleware/hasSession')
 
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
@@ -21,7 +22,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', hasSession, (req, res) => {
     const userId = req.params.id
 
     User.findById(userId).then( user => {

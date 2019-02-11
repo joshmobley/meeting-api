@@ -3,11 +3,12 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 const Agenda = require('./Agenda')
 const mongoose = require('mongoose')
+const hasSession = require('../middleware/hasSession')
 
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
-router.post("/", (req, res) => {
+router.post("/", hasSession, (req, res) => {
     const body = req.body;
     const newAgenda = new Agenda({
         _id: new mongoose.Types.ObjectId(),
