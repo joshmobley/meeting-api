@@ -25,8 +25,6 @@ router.post("/", hasSession, (req, res) => {
 router.get('/:id', hasSession, (req, res) => {
     const meetingId = req.params.id
 
-    console.log(meetingId)
-
     Meeting.findById(meetingId).populate('created_by').then( meeting => {
         res.send(meeting)
     }).catch( err => {
