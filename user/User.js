@@ -18,11 +18,8 @@ UserSchema.methods = {
 }
 
 UserSchema.pre('save', function(next) {
-    console.log('pre save');
-    console.log(this.password)
     const plaintext = this.password;
     bcrypt.hash(plaintext, 10, (err, hash) => {
-        console.log(hash);
         this.password = hash;
         next();
     })
