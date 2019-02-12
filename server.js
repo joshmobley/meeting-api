@@ -15,7 +15,7 @@ const corsOptions = {
 const app = express()
 app.use(cors(corsOptions))
 
-app.use(session({ secret: 'mightymorphinpowerrangers' }));
+app.use(session({ secret: 'process.env.SESSION_SECRET '}));
 app.use(passport.initialize())
 app.use(passport.session())
 
