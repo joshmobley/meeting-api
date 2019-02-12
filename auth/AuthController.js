@@ -8,7 +8,6 @@ router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-    console.log(req.user.email);
     res.status(200).send({
         id: req.user._id,
         email: req.user.email,
