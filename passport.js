@@ -9,19 +9,24 @@ passport.use(new LocalStrategy({
       passwordField: 'password'
   },    
   function(username, password, done) {
-    User.findOne({ email: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
+    User
+      .findOne({ where: { email: username } })
+      .then( user => {
 
-      user.verifyPassword(password).then( res => {
-          if(!res) return done(null, false)
-          return done(null, user)
-      }).catch( err => done(null, err));
+        if (!user) return done(null, false);
+
+        user
+          .validatePassword(password)
+          .then( valid => {
+            if(!valid) return done(null, false)
+            return done(null, user)
+          })
+          .catch( err => done(null, err));
+
+      })
+      .catch( err => done(null, 'cannot find user to validate'));
       
-    });
   }));
-
-
 
 passport.serializeUser(function(user, cb) {
     cb(null, user.id);

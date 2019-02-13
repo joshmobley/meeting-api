@@ -1,17 +1,13 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const Sequelize = require('sequelize')
+const sequelize = require('../db')
+const User = require('../User/User')
 
-const MeetingSchema = new mongoose.Schema({
-    _id: Schema.Types.ObjectId,
-    agenda_items: [{ type: Schema.Types.ObjectId, ref: 'Agenda' }],
-    invitation_items: [{ type: Schema.Types.ObjectId, ref: 'Invitation' }],
-    title: { type: String, required: true },
-    start_time: { type: Date, required: true },
-    end_time: { type: Date, required: true },
-    created_by: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    created_at: { type: Date, default: Date.now }
+const Meeting = sequelize.define('meeting', {
+    title: { type: Sequelize.STRING, allowNull: false },
+    start_time: { type: Sequelize.DATE, allowNull: false },
+    end_time: { type: Sequelize.DATE, allowNull: false }
 })
 
-mongoose.model('Meeting', MeetingSchema)
+Meeting.belongsTo(User)
 
-module.exports = mongoose.model('Meeting')
+module.exports = Meeting

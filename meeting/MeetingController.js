@@ -8,18 +8,17 @@ const hasSession = require('../middleware/hasSession')
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
+Meeting.sync()
+
 router.post("/", hasSession, (req, res) => {
     const body = req.body;
-    const newMeeting = new Meeting({
-        _id: new mongoose.Types.ObjectId(),
-        ...body
-    });
-
-    newMeeting.save().then( meeting => {
-        res.send(meeting)
-    }).catch( err => {
-        res.status(400).send(err.message)
+    console.log(req.user);
+    Meeting.create({
+        ...body,
+        userId: req.user.id
     })
+    .then( meeting => res.send(meeting))
+    .catch( err => res.status(401).send(err.message));
 })
 
 router.get('/:id', hasSession, (req, res) => {
@@ -33,7 +32,7 @@ router.get('/:id', hasSession, (req, res) => {
 })
 
 router.get('/', hasSession, (req, res) => {
-        Meeting.find().populate('created_by').then( meeting => {
+        Meeting.find({ created_by: req.user._id }).populate('created_by').then( meeting => {
             res.send(meeting)
         }).catch( err => {
             res.status(400).send(err.message)

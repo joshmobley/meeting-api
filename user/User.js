@@ -1,33 +1,18 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const Sequelize = require('sequelize')
+const sequelize = require('../db')
 const bcrypt = require('bcrypt')
 
-const UserSchema = new mongoose.Schema({
-    _id: Schema.Types.ObjectId,
-    name: { type: String, required: true },
-    email: { type: String, required: true, trim: true, minlength: 10, unique: true },
-    password: { type: String, required: true },
-    meetings: [{ type: Schema.Types.ObjectId, ref: 'Meeting' }],
-    created_at: { type: Date, default: Date.now }
+const User = sequelize.define('user', {
+    name: Sequelize.STRING,
+    email: { type: Sequelize.STRING, allowNull: false, unique: true },
+    password: { type: Sequelize.STRING, allowNull: false, require: true }
 })
 
-UserSchema.methods = {
-    verifyPassword: function(password) {
-        return bcrypt.compare(password, this.password)
-    }
+User.prototype.validatePassword = function(offeredPassword) {
+    return bcrypt.compare(offeredPassword, this.password)
 }
 
-UserSchema.pre('save', function(next) {
-    const plaintext = this.password;
-    bcrypt.hash(plaintext, 10, (err, hash) => {
-        this.password = hash;
-        next();
-    })
-})
+module.exports = User
+    
 
 
-
-mongoose.model('User', UserSchema)
-
-
-module.exports = mongoose.model('User')
