@@ -21,12 +21,12 @@ app.use(passport.session())
 
 require('./passport')
 
-const AgendaController = require('./agenda/AgendaController')
-const AuthController = require('./auth/AuthController')
-const MeetingController = require('./meeting/MeetingController')
-const UserController = require('./user/UserController')
+// const AgendaController = require('./agenda/AgendaController')
+const AuthController = require('./controllers/AuthController')
+const MeetingController = require('./controllers/MeetingController')
+const UserController = require('./controllers/UserController')
 
-app.use('/agenda', AgendaController)
+// app.use('/agenda', AgendaController)
 app.use('/auth', AuthController)
 app.use('/meeting', MeetingController)
 app.use('/user', UserController)

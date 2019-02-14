@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser')
-const User = require('./User')
+const User = require('../models/User')
 const hasSession = require('../middleware/hasSession')
 const bcrypt = require('bcrypt')
 
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', hasSession, (req, res) => {
     const userId = req.params.id
 
-    User.findById(userId).then( user => {
+    User.findByPk(userId).then( user => {
         res.send(user);
     }).catch( err => {
         res.status(400).send(err.message)
