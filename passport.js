@@ -9,11 +9,17 @@ passport.use(new LocalStrategy({
       passwordField: 'password'
   },    
   function(username, password, done) {
+
+    console.log(username);
+    console.log(password);
+
     User
       .findOne({ where: { email: username } })
       .then( user => {
+        console.log(user)
 
         if (!user) return done(null, false);
+
 
         user
           .validatePassword(password)

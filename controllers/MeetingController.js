@@ -15,7 +15,7 @@ router.post("/", hasSession, (req, res) => {
     const body = req.body;
     Meeting.create({
         ...body,
-        userId: req.user.id
+        user_id: req.user.id
     })
     .then( meeting => res.send(meeting))
     .catch( err => res.status(401).send(err.message));

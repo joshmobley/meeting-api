@@ -6,6 +6,8 @@ const User = sequelize.define('user', {
     name: Sequelize.STRING,
     email: { type: Sequelize.STRING, allowNull: false, unique: true },
     password: { type: Sequelize.STRING, allowNull: false, require: true }
+}, {
+    underscored: true,
 })
 
 User.prototype.validatePassword = function(offeredPassword) {

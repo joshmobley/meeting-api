@@ -1,17 +1,23 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const Sequelize = require('sequelize')
+const sequelize = require('../db')
+const Meeting = require('./Meeting')
+const User = require('./User')
+const belongsToUser = require('../scopes/definitions/belongsToUser')
+const sentToUser = require('../scopes/definitions/sentToUser')
 
-const InvitationSchema = new mongoose.Schema({
-    _id: Schema.Types.ObjectId,
-    sent_to: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    meeting_id: { type: Schema.Types.ObjectId, ref: 'Meeting', required: true },
-    created_by: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    created_at: { type: Date, default: Date.now },
-    accepted_at: { type: Date },
-    declined_at: { type: Date },
-    deleted_at: { type: Date }
+const Invitation = sequelize.define('invitation', {
+    accepted_at: { type: Sequelize.DATE },
+    declined_at: { type: Sequelize.DATE }
+}, {
+    underscored: true,
+    scopes: [
+        belongsToUser,
+        sentToUser
+    ]
 })
 
-mongoose.model('Invitation', InvitationSchema)
+Invitation.belongsTo(Meeting)
+Invitation.belongsTo(User)
+Invitation.belongsTo(User, { as: 'recipient' })
 
-module.exports = mongoose.model('Invitation')
+module.exports = Invitation

@@ -25,11 +25,13 @@ require('./passport')
 const AuthController = require('./controllers/AuthController')
 const MeetingController = require('./controllers/MeetingController')
 const UserController = require('./controllers/UserController')
+const InvitationController = require('./controllers/InvitationController')
 
 // app.use('/agenda', AgendaController)
 app.use('/auth', AuthController)
 app.use('/meeting', MeetingController)
 app.use('/user', UserController)
+app.use('/invitation', InvitationController)
 
 app.listen(3000)
 

@@ -8,6 +8,7 @@ const Meeting = sequelize.define('meeting', {
     start_time: { type: Sequelize.DATE, allowNull: false },
     end_time: { type: Sequelize.DATE, allowNull: false }
 },{
+    underscored: true,
     scopes: belongsToUser
 })
 

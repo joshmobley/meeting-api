@@ -7,6 +7,14 @@ const hasSession = require('../middleware/hasSession')
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
+const authAction = (req, res) => {
+    res.status(200).send({
+        id: req.user._id,
+        email: req.user.email,
+        name: req.user.name
+    })
+}
+
 const loginAction = (req, res) => {
     res.status(200).send({
         id: req.user._id,
@@ -15,23 +23,13 @@ const loginAction = (req, res) => {
     })
 }
 
-const getAuth = (req, res) => {
-    res.status(200).send({
-        id: req.user._id,
-        email: req.user.email,
-        name: req.user.name
-    })
-}
-
 const logoutAction = (req, res) => {
     req.logout();
     res.status(200).send('logout successful');
 }
 
+router.get('/', hasSession, authAction)
 router.post('/login', passport.authenticate('local'), loginAction)
-
-router.get('/', hasSession, getAuth)
-
 router.get('/logout', logoutAction)
 
 module.exports = router
