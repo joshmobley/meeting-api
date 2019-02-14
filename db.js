@@ -3,13 +3,9 @@ const dotenv = require('dotenv')
 dotenv.load();
 const Sequelize = require('sequelize')
 
-
-const sequelize = new Sequelize('clearer_meetings', 'admin', 'uAl8m&CKPMILOD7U', {
-    host: 'meetings-test.ctb4576y9mt2.us-west-2.rds.amazonaws.com',
-    dialect: 'mysql'
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_ENDPOINT,
+    dialect: process.env.DB_DIALECT
 });
 
 module.exports = sequelize;
-//const uri = process.env.MONGO_URL;
-
-//mongoose.connect(uri).catch( err => console.log(err));
