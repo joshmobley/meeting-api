@@ -45,7 +45,7 @@ const read = async (req, res) => {
 const update = async (req, res) => {
     const updateData = req.body;
 
-    const action = Invitation.findByPk(req.params.id)
+    const action = Invitation.scope(belongsToUser(req.user.id)).findByPk(req.params.id)
     const invitation = await asyncAction(req, res, action)
 
     if( updateData.recipient_email ) {

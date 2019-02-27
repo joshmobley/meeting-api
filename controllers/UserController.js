@@ -1,17 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const bodyParser = require('body-parser')
-const User = require('../models/User')
-const hasSession = require('../middleware/hasSession')
 const bcrypt = require('bcrypt')
 const asyncAction = require('../utils/asyncAction')
+const User = require('../models/User')
 
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(bodyParser.json())
 
 User.sync()
 
-const createUser = async (req, res) => {
+const readAll = async (req,res) => {
+    
+}
+
+const create = async (req, res) => {
     const body = req.body;
     
     const findExistingUser = User.findOne({ where: { email: body.email }})
@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
     res.send(newUser)
 }
 
-const getUser = async (req, res) => {
+const read = async (req, res) => {
     const userId = req.params.id
     const findUser = User.findByPk(userId)
     const user = await asyncAction(req, res, findUser)
@@ -36,7 +36,16 @@ const getUser = async (req, res) => {
     res.send(user)
 }
 
-router.post('/', createUser)
-router.get('/:id', hasSession, getUser)
+const update = async (req, res) => {
+    
+}
 
-module.exports = router
+const routes = createResource(
+    readAll,
+    create,
+    read,
+    update,
+    del
+)
+
+module.exports = routes
